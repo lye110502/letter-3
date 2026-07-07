@@ -9,7 +9,12 @@ body {
   min-height: 100vh;
   font-family: 'Gowun Dodum', sans-serif;
   color: #1f2937;
-  background: #cfe9ff;
+
+  background-image: url("background.jpg");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .page {
@@ -262,6 +267,14 @@ button:hover {
 }
 
 @media (max-width: 640px) {
+  body {
+    background-image: url("background.jpg");
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+  }
+
   .page {
     padding: 24px 14px;
   }
