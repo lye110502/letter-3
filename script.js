@@ -2,33 +2,25 @@
 // date는 반드시 YYYY-MM-DD 형식으로 적기
 // password는 편지마다 다르게 설정 가능
 const letters = [
- {
-    date: "2026-07-06",
-    title: "오늘의 편지",
-    password: "0418",
-    hint: "우리의 기념일 4자리 숫자 💙",
-    content: `오늘 하루 어땠어?
-...
-`
-},
-{
+ 
+  {
     date: "2026-07-07",
-    title: "내일의 편지",
-    password: "0707",
-    hint: "날짜와 같은 숫자 🎂",
-    content: `이건 내일 열 수 있는 편지야.
+    title: "짜쟌",
+    password: "파란색",
+    hint: "내가 제일 좋아하는 색은?",
+    content: `바보야 안녕 이거 너무 싱기하지 내가 또 신기한 걸 만들어 왓서
 ...
 `
-},
-{
+  },
+  {
     date: "2026-07-08",
-    title: "그 다음 날의 편지",
+    title: "메롱",
     password: "blue",
     hint: "하늘과 바다의 색 영어로 🌊",
     content: `오늘도 편지를 열어줘서 고마워.
 ...
 `
-}
+  }
 ];
 
 const passwordInput = document.getElementById("passwordInput");
@@ -39,16 +31,22 @@ const letterTitle = document.getElementById("letterTitle");
 const letterContent = document.getElementById("letterContent");
 const letterList = document.getElementById("letterList");
 const todayDate = document.getElementById("todayDate");
+const hintText = document.getElementById("hintText");
+const mainTitle = document.getElementById("mainTitle");
 
 const today = getKoreaDateString();
 const todayLetter = letters.find(letter => letter.date === today);
 
 todayDate.textContent = formatDate(today);
-const hintText = document.getElementById("hintText");
+
+// 위 제목을 오늘 날짜로 변경
+const todayParts = today.split("-");
+mainTitle.textContent = `${Number(todayParts[1])}월 ${Number(todayParts[2])}일의 편지`;
 
 if (todayLetter) {
-    hintText.textContent = `💡 힌트: ${todayLetter.hint}`;
+  hintText.textContent = `💡 힌트: ${todayLetter.hint}`;
 }
+
 renderLetterList();
 
 passwordInput.addEventListener("keydown", event => {
@@ -116,10 +114,14 @@ function scrollToList() {
 
 function getKoreaDateString() {
   const now = new Date();
-  const koreaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
+  const koreaTime = new Date(
+    now.toLocaleString("en-US", { timeZone: "Asia/Seoul" })
+  );
+
   const year = koreaTime.getFullYear();
   const month = String(koreaTime.getMonth() + 1).padStart(2, "0");
   const day = String(koreaTime.getDate()).padStart(2, "0");
+
   return `${year}-${month}-${day}`;
 }
 
