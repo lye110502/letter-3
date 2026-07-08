@@ -2,7 +2,6 @@
 // date는 반드시 YYYY-MM-DD 형식으로 적기
 // password는 편지마다 다르게 설정 가능
 const letters = [
- 
   {
     date: "2026-07-07",
     title: "이두니, 유니스트에 오다!",
@@ -45,12 +44,13 @@ const todayLetter = letters.find(letter => letter.date === today);
 
 todayDate.textContent = formatDate(today);
 
-// 위 제목을 오늘 날짜로 변경
 const todayParts = today.split("-");
 mainTitle.textContent = `${Number(todayParts[1])}월 ${Number(todayParts[2])}일의 편지`;
 
 if (todayLetter) {
   hintText.textContent = `💡 힌트: ${todayLetter.hint}`;
+} else {
+  hintText.textContent = "오늘 등록된 편지가 아직 없어요.";
 }
 
 renderLetterList();
@@ -78,6 +78,20 @@ function openTodayLetter() {
   }
 }
 
+function openSelectedLetter(letter) {
+  const inputPassword = prompt(`💡 힌트: ${letter.hint}\n\n암호를 입력하세요!`);
+
+  if (inputPassword === null) return;
+
+  if (inputPassword.trim() === letter.password) {
+    showMessage("암호가 맞았어요!", "success");
+    showLetter(letter);
+    letterBox.scrollIntoView({ behavior: "smooth" });
+  } else {
+    showMessage("암호가 틀렸어요! 다시 시도해 주세요.", "error");
+  }
+}
+
 function showLetter(letter) {
   letterDate.textContent = formatDate(letter.date);
   letterTitle.textContent = letter.title;
@@ -92,7 +106,7 @@ function renderLetterList() {
     const isOpen = letter.date <= today;
 
     const item = document.createElement("div");
-    item.className = "letter-item";
+    item.className = `letter-item ${isOpen ? "" : "locked"}`;
 
     item.innerHTML = `
       <div class="letter-icon">${isOpen ? "💌" : "✉️"}</div>
@@ -104,6 +118,12 @@ function renderLetterList() {
         ${isOpen ? "열람 가능 ›" : "잠김 🔒"}
       </div>
     `;
+
+    if (isOpen) {
+      item.addEventListener("click", () => {
+        openSelectedLetter(letter);
+      });
+    }
 
     letterList.appendChild(item);
   });
